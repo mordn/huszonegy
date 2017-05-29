@@ -1,22 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hu.unideb.inf.pk.huszonegy.model;
 
 import java.util.Vector;
-
 /**
- *
- * @author Gabi
+ * Egy kártyapaklit megvalósító modell osztálya.
+ * 
+ * @author Bódis Gábor
+ * @version 1.0
+ * @since 2017-05-29
  */
 public class Pakli {
-    
-    
-
+    /**
+     * A kártyapaklit megvalósító vektor.
+     */
     public Vector<Kartya> pakli;
-    
+    /**
+     * Konstruktor paraméter nélküli példányosításhoz. 
+     * A konstruktor feltölti a {@link Pakli#pakli}-t a 32 db magyar kártyával.
+     */
     public Pakli() {
         this.pakli = new Vector<>();
         for (int i=0; i<32; i++){
@@ -131,5 +131,4 @@ public class Pakli {
             }
         }
     }
-    
 }

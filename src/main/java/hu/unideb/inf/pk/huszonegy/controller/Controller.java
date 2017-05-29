@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hu.unideb.inf.pk.huszonegy.controller;
 
 import hu.unideb.inf.pk.huszonegy.model.Kartya;
@@ -10,21 +5,47 @@ import hu.unideb.inf.pk.huszonegy.model.Pakli;
 import java.util.Scanner;
 
 /**
- *
- * @author Gabi
+ * A játék irányításáért felelős osztály.
+ * A modell és a view kommunikációját biztosítja, valamint itt megy végbe az összes számolás.
+ * 
+ * @author Bódis Gábor
+ * @version 1.0
+ * @since 2017-05-29
  */
 public class Controller {
-    
+    /**
+     * A kártyapaklit tartalmazó objektum.
+     * A játékos és a gép ebből "húz" a játék menete alatt.
+     */
     private static final Pakli kartyapakli = new Pakli();
+    /**
+     * A {@link Controller#kartyapakli}-ból kihúzott kátyalap. 
+     */
     private static Kartya kihuzott_kartya;
+    /**
+     * A {@link Controller#kartyapakli}-ból kihúzott kátyalap sorszáma.
+     */
     private static int huzott_lap_index;
-    
+    /**
+     * A játékos kezében lévő kártyalapok szöveges formátumban.
+     */
     private static String kez = "";
+    /**
+     * A játékos kezében lévő kártyalapok értéke.
+     */
     private static int kez_ertek = 0;
-    
+    /**
+     * A gép kezében lévő kártyalapok szöveges formátumban.
+     */
     private static String gep_kez = "";
+    /**
+     * A gép kezében lévő kártyalapok értéke.
+     */
     private static int gep_kez_ertek = 0;
-    
+    /**
+     * Az eljárás a játékos húzását valósítja meg.
+     * Kihúz egy véletlenszerű lapot a {@link Controller#kartyapakli}-ból, majd hozzáadja a {@link Controller#kez}-hez és a {@link Controller#kez_ertek}-hez.
+     */
     public static void jatekos_huzas(){
         huzott_lap_index = rng(0,kartyapakli.pakli.size()-1);
         kihuzott_kartya = kartyapakli.pakli.remove(huzott_lap_index);
@@ -33,7 +54,10 @@ public class Controller {
         kez+=kihuzott_kartya.getSzin()+" "+kihuzott_kartya.getJel();
         kez_ertek+=kihuzott_kartya.getErtek();
     }
-    
+    /**
+     * Az eljárás a gép húzását valósítja meg.
+     * Kihúz egy véletlenszerű lapot a {@link Controller#kartyapakli}-ból, majd hozzáadja a {@link Controller#gep_kez}-hez és a {@link Controller#gep_kez_ertek}-hez.
+     */
     public static void gep_huzas(){
         huzott_lap_index = rng(0,kartyapakli.pakli.size()-1);
         kihuzott_kartya = kartyapakli.pakli.remove(huzott_lap_index);
@@ -42,12 +66,10 @@ public class Controller {
         gep_kez+=kihuzott_kartya.getSzin()+" "+kihuzott_kartya.getJel();
         gep_kez_ertek+=kihuzott_kartya.getErtek();
     }
-    
-    public static void gep_jatszik(){
-        gep_huzas();
-        gep_huzas();
-    }
-
+    /**
+     * Az eljárás a játékos "körét" valósítja meg.
+     * A játékos eldöntheti, hogy húz e még lapot, vagy megáll.
+     */
     public static void jatekos_jatszik(){
         try (Scanner s = new Scanner(System.in)) {
             byte be;
@@ -76,7 +98,24 @@ public class Controller {
             }
         }
     }
-    
+    /**
+     * A gép körét valósítja meg.
+     * A gép minimális MI-vel rendelkezik. Az MI eldönti, hogy meg kell-e állni, vagy húzni kell-e még lapot.
+     */
+    public static void gep_jatszik(){
+        gep_huzas();
+        gep_huzas();
+        while (gep_kez_ertek < 15){
+            gep_huzas();
+        }
+    }
+    /**
+     * A játék összesítéséért felelős metódus.
+     * Megvizsgálja a játékos és a gép kezét, majd eldönti hogy ki nyert.
+     * Visszaadja a győztest szöveges formátumban.
+     * 
+     * @return a játszma eredménye.
+     */
     public static String osszesit() {
        
        //több pontja van kartyapakli játékosnak mint kartyapakli gépnek és nem ment túl, vagy kartyapakli gépnek van több, de csak ő ment túl
@@ -88,23 +127,46 @@ public class Controller {
        else
            return "Döntetlen!!!";
     }
-    
+    /**
+     * Véletlenszám generátor.
+     * Paraméterként kapott alsó és felső határ között generál egy véletlenszerű egész számot.
+     * 
+     * @param also a véletlen szám alsó határa
+     * @param felso a véletlen szám felső határa
+     * @return a generált véletlen szám.
+     */
     private static int rng(int also,int felso){
         return (int) ( Math.random() * (felso - also + 1) ) + also;
     }
-
+    /**
+     * Visszaadja a játékos kezét.
+     * 
+     * @return A játékos keze.
+     */
     public static String getKez() {
         return kez;
     }
-
+    /**
+     * Beállítja a játékos kezét a paraméterül kapott értékre.
+     * 
+     * @param kez A játékos keze.
+     */
     public static void setKez(String kez) {
         Controller.kez = kez;
     }
-
+    /**
+     * Visszaadja a gép kezét.
+     * 
+     * @return A gép keze.
+     */
     public static String getGep_kez() {
         return gep_kez;
     }
-
+    /**
+     * Beállítja a gép kezét a paraméterül kapott értékre.
+     * 
+     * @param gep_kez A gép keze.
+     */
     public static void setGep_kez(String gep_kez) {
         Controller.gep_kez = gep_kez;
     }
