@@ -17,12 +17,12 @@ public class Main {
      */
     public static void main(String[] args) {
         Controller ctr = new Controller();   
-        System.out.println("A játékos kezd:");   
+        System.out.println("A játék elindult!!!\nA játékos kezd:");   
         ctr.jatekos_jatszik();
-        System.out.println("A játékos végzett, a gép következik:");
+        System.out.println("A játékos végzett, a gép következik.");
         ctr.gep_jatszik();
-        System.out.println("A gep keze: " + ctr.getGep_kez());
-        System.out.println("A kezed: " + ctr.getKez());
+        System.out.println("A gép végzett, összesítés következik:\nA gep keze: " + ctr.getGep_kez()+" --- az értéke: "+ctr.getGep_kez_ertek());
+        System.out.println("A kezed: " + ctr.getKez()+" --- az értéke: "+ctr.getKez_ertek());
         System.out.println(ctr.osszesit());
     }
 }
