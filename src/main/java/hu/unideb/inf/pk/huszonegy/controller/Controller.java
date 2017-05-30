@@ -17,36 +17,36 @@ public class Controller {
      * A kártyapaklit tartalmazó objektum.
      * A játékos és a gép ebből "húz" a játék menete alatt.
      */
-    private static final Pakli kartyapakli = new Pakli();
+    private final Pakli kartyapakli = new Pakli();
     /**
      * A {@link Controller#kartyapakli}-ból kihúzott kátyalap. 
      */
-    private static Kartya kihuzott_kartya;
+    private Kartya kihuzott_kartya;
     /**
      * A {@link Controller#kartyapakli}-ból kihúzott kátyalap sorszáma.
      */
-    private static int huzott_lap_index;
+    private int huzott_lap_index;
     /**
      * A játékos kezében lévő kártyalapok szöveges formátumban.
      */
-    private static String kez = "";
+    private String kez = "";
     /**
      * A játékos kezében lévő kártyalapok értéke.
      */
-    private static int kez_ertek = 0;
+    private int kez_ertek = 0;
     /**
      * A gép kezében lévő kártyalapok szöveges formátumban.
      */
-    private static String gep_kez = "";
+    private String gep_kez = "";
     /**
      * A gép kezében lévő kártyalapok értéke.
      */
-    private static int gep_kez_ertek = 0;
+    private int gep_kez_ertek = 0;
     /**
      * Az eljárás a játékos húzását valósítja meg.
      * Kihúz egy véletlenszerű lapot a {@link Controller#kartyapakli}-ból, majd hozzáadja a {@link Controller#kez}-hez és a {@link Controller#kez_ertek}-hez.
      */
-    public static void jatekos_huzas(){
+    public void jatekos_huzas(){
         huzott_lap_index = rng(0,kartyapakli.pakli.size()-1);
         kihuzott_kartya = kartyapakli.pakli.remove(huzott_lap_index);
         if (!kez.equals(""))
@@ -58,7 +58,7 @@ public class Controller {
      * Az eljárás a gép húzását valósítja meg.
      * Kihúz egy véletlenszerű lapot a {@link Controller#kartyapakli}-ból, majd hozzáadja a {@link Controller#gep_kez}-hez és a {@link Controller#gep_kez_ertek}-hez.
      */
-    public static void gep_huzas(){
+    public void gep_huzas(){
         huzott_lap_index = rng(0,kartyapakli.pakli.size()-1);
         kihuzott_kartya = kartyapakli.pakli.remove(huzott_lap_index);
         if (!gep_kez.equals(""))
@@ -70,7 +70,7 @@ public class Controller {
      * Az eljárás a játékos "körét" valósítja meg.
      * A játékos eldöntheti, hogy húz e még lapot, vagy megáll.
      */
-    public static void jatekos_jatszik(){
+    public void jatekos_jatszik(){
         try (Scanner s = new Scanner(System.in)) {
             byte be;
             jatekos_huzas();
@@ -102,7 +102,7 @@ public class Controller {
      * A gép körét valósítja meg.
      * A gép minimális MI-vel rendelkezik. Az MI eldönti, hogy meg kell-e állni, vagy húzni kell-e még lapot.
      */
-    public static void gep_jatszik(){
+    public void gep_jatszik(){
         gep_huzas();
         gep_huzas();
         while (gep_kez_ertek < 15){
@@ -116,13 +116,18 @@ public class Controller {
      * 
      * @return a játszma eredménye.
      */
-    public static String osszesit() {
-       
-       //több pontja van kartyapakli játékosnak mint kartyapakli gépnek és nem ment túl, vagy kartyapakli gépnek van több, de csak ő ment túl
-       if ((kez_ertek>gep_kez_ertek && kez_ertek < 22) || (gep_kez_ertek>kez_ertek && kez_ertek < 22 && gep_kez_ertek>21) )
+    public String osszesit() {
+       //ha több pontja van a játékosnak mint a gépnek és nem ment túl
+       if ((kez_ertek>gep_kez_ertek && kez_ertek < 22) )
            return "Gratulálok, Nyertél!!!";
-       //a gépnek van több pontja, mint kartyapakli játékosnak és nem ment túl, vagy kartyapakli játékosnak van több, de csak ő ment túl       
-       else if ((gep_kez_ertek>kez_ertek && gep_kez_ertek < 22)|| (kez_ertek>gep_kez_ertek && gep_kez_ertek < 22 && kez_ertek>21))
+       //ha a gépnek van több, de csak ő ment túl
+       else if (gep_kez_ertek>kez_ertek && kez_ertek < 22 && gep_kez_ertek>21)
+           return "Gratulálok, Nyertél!!!";
+       //ha a gépnek van több pontja, mint a játékosnak és nem ment túl       
+       else if ((gep_kez_ertek>kez_ertek && gep_kez_ertek < 22))
+           return "A Gép Nyert!!!";
+       // ha a játékosnak van több, de csak ő ment túl
+       else if(kez_ertek>gep_kez_ertek && gep_kez_ertek < 22 && kez_ertek>21)    
            return "A Gép Nyert!!!";
        else
            return "Döntetlen!!!";
@@ -135,7 +140,7 @@ public class Controller {
      * @param felso a véletlen szám felső határa
      * @return a generált véletlen szám.
      */
-    private static int rng(int also,int felso){
+    private int rng(int also,int felso){
         return (int) ( Math.random() * (felso - also + 1) ) + also;
     }
     /**
@@ -143,7 +148,7 @@ public class Controller {
      * 
      * @return A játékos keze.
      */
-    public static String getKez() {
+    public String getKez() {
         return kez;
     }
     /**
@@ -151,15 +156,15 @@ public class Controller {
      * 
      * @param kez A játékos keze.
      */
-    public static void setKez(String kez) {
-        Controller.kez = kez;
+    public void setKez(String kez) {
+        this.kez = kez;
     }
     /**
      * Visszaadja a gép kezét.
      * 
      * @return A gép keze.
      */
-    public static String getGep_kez() {
+    public String getGep_kez() {
         return gep_kez;
     }
     /**
@@ -167,8 +172,44 @@ public class Controller {
      * 
      * @param gep_kez A gép keze.
      */
-    public static void setGep_kez(String gep_kez) {
-        Controller.gep_kez = gep_kez;
+    public void setGep_kez(String gep_kez) {
+        this.gep_kez = gep_kez;
     }
- 
+    /**
+     * Visszaadja a játékos kezében lévő lapok értékét.
+     * 
+     * @return A játékos kezében lévő lapok értéke.
+     */
+    public int getKez_ertek() {
+        return kez_ertek;
+    }
+    /**
+     * Visszaadja a gép kezében lévő lapok értékét.
+     * 
+     * @return A gép kezében lévő lapok értéke.
+     */
+    public int getGep_kez_ertek() {
+        return gep_kez_ertek;
+    }
+    /**
+     * Beálltja a játékos kezében lévő lapok összértékét.
+     * 
+     * @param kez_ertek A játékos kezében lévő lapok összértéke.
+     */
+    public void setKez_ertek(int kez_ertek) {
+        this.kez_ertek = kez_ertek;
+    }
+      /**
+     * Beálltja a gép kezében lévő lapok összértékét.
+     * 
+     * @param gep_kez_ertek A gép kezében lévő lapok összértéke.
+     */
+    public void setGep_kez_ertek(int gep_kez_ertek) {    
+        this.gep_kez_ertek = gep_kez_ertek;
+    }
+    /**
+     * Konstruktor paraméter nélküli példányosításhoz. 
+     */
+    public Controller() {
+    }
 }

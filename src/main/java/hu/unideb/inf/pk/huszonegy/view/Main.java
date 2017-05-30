@@ -16,12 +16,13 @@ public class Main {
      * @param args A parancssori argumentumok tömbke. 
      */
     public static void main(String[] args) {
-        System.out.println("A játékos kezd:");
-        Controller.jatekos_jatszik();
+        Controller ctr = new Controller();   
+        System.out.println("A játékos kezd:");   
+        ctr.jatekos_jatszik();
         System.out.println("A játékos végzett, a gép következik:");
-        Controller.gep_jatszik();
-        System.out.println("A gep keze: " + Controller.getGep_kez());
-        System.out.println("A kezed: " + Controller.getKez());
-        System.out.println(Controller.osszesit());
+        ctr.gep_jatszik();
+        System.out.println("A gep keze: " + ctr.getGep_kez());
+        System.out.println("A kezed: " + ctr.getKez());
+        System.out.println(ctr.osszesit());
     }
 }
