@@ -1,6 +1,8 @@
 package hu.unideb.inf.pk.huszonegy.model;
 
 import java.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Egy kártyapaklit megvalósító modell osztálya.
  * 
@@ -14,13 +16,17 @@ public class Pakli {
      */
     public Vector<Kartya> pakli;
     /**
+     * A Pakli osztály loggere.
+     */
+    private static Logger logger = LoggerFactory.getLogger(Pakli.class);
+    /**
      * Konstruktor paraméter nélküli példányosításhoz. 
      * A konstruktor feltölti a {@link Pakli#pakli}-t a 32 db magyar kártyával.
      */
     public Pakli() {
         this.pakli = new Vector<>();
         for (int i=0; i<32; i++){
-            if (i<8){ //piros
+            if (i<8){ 
                 switch (i%8) {
                     case 0:
                         pakli.add(new Kartya(i,2,"Piros","Alsó"));
@@ -47,7 +53,7 @@ public class Pakli {
                         pakli.add(new Kartya(i,10,"Piros","Tíz"));
                         break;    
                 }
-            }else if (i<16){ //zold
+            }else if (i<16){ 
                 switch (i%8) {
                     case 0:
                         pakli.add(new Kartya(i,2,"Zöld","Alsó"));
@@ -74,7 +80,7 @@ public class Pakli {
                         pakli.add(new Kartya(i,10,"Zöld","Tíz"));
                         break;    
                 }
-            }else if (i<24){ //makk
+            }else if (i<24){ 
                 switch (i%8) {
                     case 0:
                         pakli.add(new Kartya(i,2,"Makk","Alsó"));
@@ -101,7 +107,7 @@ public class Pakli {
                         pakli.add(new Kartya(i,10,"Makk","Tíz"));
                         break;    
                 }
-            }else{           //tok   
+            }else{              
                 switch (i%8) {
                     case 0:
                         pakli.add(new Kartya(i,2,"Tök","Alsó"));
@@ -130,5 +136,6 @@ public class Pakli {
                 }
             }
         }
+        logger.debug("A pakli létrehozva, feltöltve a 32 magyar kártyával");
     }
 }

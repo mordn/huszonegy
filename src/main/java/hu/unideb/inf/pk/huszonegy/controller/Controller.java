@@ -3,6 +3,8 @@ package hu.unideb.inf.pk.huszonegy.controller;
 import hu.unideb.inf.pk.huszonegy.model.Kartya;
 import hu.unideb.inf.pk.huszonegy.model.Pakli;
 import java.util.Scanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A játék irányításáért felelős osztály.
@@ -18,6 +20,10 @@ public class Controller {
      * A játékos és a gép ebből "húz" a játék menete alatt.
      */
     private final Pakli kartyapakli = new Pakli();
+    /**
+     * A Controller osztály loggere.
+     */
+    private static Logger logger = LoggerFactory.getLogger(Controller.class);
     /**
      * A {@link Controller#kartyapakli}-ból kihúzott kátyalap. 
      */
@@ -53,6 +59,7 @@ public class Controller {
             kez+=", ";
         kez+=kihuzott_kartya.getSzin()+" "+kihuzott_kartya.getJel();
         kez_ertek+=kihuzott_kartya.getErtek();
+        logger.info("A játékos a {} lapot húzta.",kihuzott_kartya.toString());
     }
     /**
      * Az eljárás a gép húzását valósítja meg.
@@ -65,12 +72,14 @@ public class Controller {
             gep_kez+=", ";
         gep_kez+=kihuzott_kartya.getSzin()+" "+kihuzott_kartya.getJel();
         gep_kez_ertek+=kihuzott_kartya.getErtek();
+        logger.info("A gép a {} lapot húzta.",kihuzott_kartya.toString());
     }
     /**
      * Az eljárás a játékos "körét" valósítja meg.
      * A játékos eldöntheti, hogy húz e még lapot, vagy megáll.
      */
     public void jatekos_jatszik(){
+        logger.info("A játékos következik!");
         try (Scanner s = new Scanner(System.in)) {
             byte be;
             jatekos_huzas();
@@ -103,6 +112,7 @@ public class Controller {
      * A gép minimális MI-vel rendelkezik. Az MI eldönti, hogy meg kell-e állni, vagy húzni kell-e még lapot.
      */
     public void gep_jatszik(){
+        logger.info("A gép következik!");
         gep_huzas();
         gep_huzas();
         while (gep_kez_ertek < 15){
@@ -117,20 +127,31 @@ public class Controller {
      * @return a játszma eredménye.
      */
     public String osszesit() {
+       logger.info("A játék véget ért, összesítés következik!");
        //ha több pontja van a játékosnak mint a gépnek és nem ment túl
-       if ((kez_ertek>gep_kez_ertek && kez_ertek < 22) )
-           return "Gratulálok, Nyertél!!!";
+       if ((kez_ertek>gep_kez_ertek && kez_ertek < 22) ){
+            logger.info("A játékos nyert. Pontszáma: {} a gép pontszáma: {}",kez_ertek,gep_kez_ertek);
+            return "Gratulálok, Nyertél!!!";
+       }  
        //ha a gépnek van több, de csak ő ment túl
-       else if (gep_kez_ertek>kez_ertek && kez_ertek < 22 && gep_kez_ertek>21)
+       else if (gep_kez_ertek>kez_ertek && kez_ertek < 22 && gep_kez_ertek>21){
+           logger.info("A játékos nyert. Pontszáma: {} a gép pontszáma: {}",kez_ertek,gep_kez_ertek);
            return "Gratulálok, Nyertél!!!";
+       }
        //ha a gépnek van több pontja, mint a játékosnak és nem ment túl       
-       else if ((gep_kez_ertek>kez_ertek && gep_kez_ertek < 22))
+       else if ((gep_kez_ertek>kez_ertek && gep_kez_ertek < 22)){
+           logger.info("A gép nyert. Pontszáma: {} a játékos pontszáma: {}",gep_kez_ertek,kez_ertek);
            return "A Gép Nyert!!!";
+       }
        // ha a játékosnak van több, de csak ő ment túl
-       else if(kez_ertek>gep_kez_ertek && gep_kez_ertek < 22 && kez_ertek>21)    
+       else if(kez_ertek>gep_kez_ertek && gep_kez_ertek < 22 && kez_ertek>21) {
+           logger.info("A gép nyert. Pontszáma: {} a játékos pontszáma: {}",gep_kez_ertek,kez_ertek);
            return "A Gép Nyert!!!";
-       else
+       }
+       else{
+           logger.info("A játék döntetlen lett. A játékos pontszáma: {} a gép pontszáma: {}",kez_ertek,gep_kez_ertek);
            return "Döntetlen!!!";
+       }
     }
     /**
      * Véletlenszám generátor.
@@ -199,7 +220,7 @@ public class Controller {
     public void setKez_ertek(int kez_ertek) {
         this.kez_ertek = kez_ertek;
     }
-      /**
+    /**
      * Beálltja a gép kezében lévő lapok összértékét.
      * 
      * @param gep_kez_ertek A gép kezében lévő lapok összértéke.
@@ -211,5 +232,6 @@ public class Controller {
      * Konstruktor paraméter nélküli példányosításhoz. 
      */
     public Controller() {
+        logger.debug("A Controller objektum létrejött");
     }
 }

@@ -6,7 +6,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>  
     
-    <description>Huszonegy nevű magyar kártyajáték.</description>
+    <description>Huszonegy nevű magyar kártyajáték. A projekt a programozási környezetek tantárgy beadandójaként készült.</description>
 
     <developers>
         <developer>
@@ -104,16 +104,16 @@
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
+		<artifactId>maven-assembly-plugin</artifactId>
+		<version>3.0.0</version>
+		<executions>
                     <execution>
                         <id>make-assembly</id>
-						<goals>
+			<goals>
                             <goal>single</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
+			</goals>
+			<phase>package</phase>
+			<configuration>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
@@ -122,9 +122,9 @@
                                     <mainClass>hu.unideb.inf.pk.huszonegy.view.Main</mainClass>
                                 </manifest>
                             </archive>
-						</configuration>
+			</configuration>
                     </execution>
-				</executions>
+		</executions>
             </plugin>
             
             <plugin>
@@ -152,9 +152,9 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.25</version>
+            <version>1.7.5</version>
         </dependency>
-
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
